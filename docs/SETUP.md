@@ -99,6 +99,6 @@ The password service validates the hash format from `reconciliation.password_acc
 docker build --platform linux/amd64 -t holiday-supplier-workspace .
 ```
 
-The Dockerfile starts `python -m reconciliation serve-hosted --host 0.0.0.0`, listens on `PORT` and runs as an unprivileged user. Cloud Run must provide the runtime configuration, secret references and a service identity with narrowly scoped access to the selected bucket and secrets.
+The Dockerfile starts `python -m reconciliation serve-hosted --host 0.0.0.0`, listens on `PORT` and runs as an unprivileged user. It installs runtime dependencies only. The normal local development setup also installs evaluation tools; keep those separate from production and review the known advisory notes in `SECURITY.md`. Cloud Run must provide the runtime configuration, secret references and a service identity with narrowly scoped access to the selected bucket and secrets.
 
 A valid health response confirms process configuration, not end-to-end storage or provider availability. Use separate cloud and model verification before relying on a deployment. Request budgets and billing alerts are not guaranteed provider-wide spending caps.

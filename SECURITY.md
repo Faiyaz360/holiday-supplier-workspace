@@ -25,3 +25,14 @@ Provider and cloud billing can lag. Request limits and alerts reduce exposure bu
 ## Reporting a concern
 
 Do not place credentials, passwords or private records in a public issue. A public issue can describe a concern without sensitive details; coordinate any sensitive reproduction material privately with the repository owner.
+
+## Evaluation dependencies
+
+The default development environment includes ADK evaluation tools. The container installs runtime dependencies only (`uv sync --frozen --no-dev`); it excludes the evaluation-only LiteLLM and NLTK packages.
+
+The locked evaluation environment currently has two known advisory families:
+
+- [LiteLLM proxy routing overrides](https://github.com/BerriAI/litellm/security/advisories/GHSA-3cv6-jpf6-8222). This application does not run a LiteLLM proxy or accept its routing parameters. The compatible evaluation dependency currently constrains LiteLLM below the patched release; do not expose a separate proxy from this environment.
+- [NLTK model-artifact path controls](https://github.com/nltk/nltk/security/advisories/GHSA-8mgp-746c-j5xp). No patched release was listed at the 20 October 2026 check. This application does not expose the affected model import/export APIs. Keep evaluation input and model paths trusted.
+
+These are documented dependency risks, not a claim of exploitability through the workspace. Keep evaluation tools out of production and recheck advisories before changing their use. A passing test suite or clean credential scan is not a security certification.

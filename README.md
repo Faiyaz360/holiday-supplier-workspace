@@ -115,7 +115,7 @@ docs/             Setup, architecture, evaluation and screenshots
 
 ## Deployment and limits
 
-The [Dockerfile](Dockerfile) starts the hosted workspace as an unprivileged user. [SETUP.md](docs/SETUP.md) lists the runtime configuration and deployment requirements. The repository includes no cloud account IDs, deployed password, API keys or private run records.
+The [Dockerfile](Dockerfile) starts the hosted workspace as an unprivileged user and excludes evaluation-only dependencies. Known evaluation-tool advisories and their deployment limits are documented in [SECURITY.md](SECURITY.md). [SETUP.md](docs/SETUP.md) lists the runtime configuration and deployment requirements. The repository includes no cloud account IDs, deployed password, API keys or private run records.
 
 The matcher expects complete open-item CSV snapshots. It preserves GBP, EUR and USD amounts and performs no foreign-exchange conversion or PDF ingestion. The current hosted portfolio uses a shared password and expiring sessions. A company rollout would need individual identities, organisational access policies, retention rules and approved finance connections.
 
