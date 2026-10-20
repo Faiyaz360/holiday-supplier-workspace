@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "fictional": true,
+  "sha256": "0677555d65c2102dab413f23d4176ca054c39cb8b0b4d0f9af28dc1d2059ea24",
+  "width": 920,
+  "height": 560,
+  "invoice_ref": "INV-0002",
+  "currency": "EUR",
+  "amount": "25.00",
+  "reference_region": {
+    "left": 0.04,
+    "top": 0.5,
+    "right": 0.65,
+    "bottom": 0.6
+  },
+  "boundary": "Reading/consistency experiment only; no authenticity or ledger verification"
+}

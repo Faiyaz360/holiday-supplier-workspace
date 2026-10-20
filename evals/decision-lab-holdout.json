@@ -1,0 +1,20 @@
+[
+  {
+    "id": "holdout_split_settlement",
+    "message": "Please allocate remittance REM-302 to INV-0002 and INV-0003; INV-0003 remains disputed.",
+    "label_status": "unreviewed",
+    "expected": null
+  },
+  {
+    "id": "holdout_future_offer",
+    "message": "If you confirm the booking cancellation for INV-0002 we can issue a credit next week. Nothing has been issued yet.",
+    "label_status": "unreviewed",
+    "expected": null
+  },
+  {
+    "id": "holdout_obscured_reference",
+    "message": "Our message thread calls this booking 2002, but we cannot find the invoice number. Can you send it?",
+    "label_status": "unreviewed",
+    "expected": null
+  }
+]

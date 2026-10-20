@@ -1,0 +1,357 @@
+@media screen {
+  body.embedded {
+    background: #fff;
+    position: relative;
+    font-size: 13px;
+  }
+  .embedded > .skip,
+  .embedded > .topbar,
+  .embedded .sidebar,
+  .embedded .breadcrumb,
+  .embedded .overview,
+  .embedded .workflow-status,
+  .embedded .rail,
+  .embedded .lower-grid,
+  .embedded .footer {
+    display: none !important;
+  }
+  .embedded .shell {
+    display: block;
+    min-height: 0;
+  }
+  .embedded main {
+    padding: 0;
+    max-width: none;
+    margin: 0;
+  }
+  .embedded .content-grid {
+    display: block;
+    margin: 0;
+  }
+  .embedded #overview {
+    height: 0;
+    margin: 0;
+  }
+  .embedded #overview .heading {
+    margin: 0;
+  }
+  .embedded #overview .heading > div {
+    display: none;
+  }
+  .embedded #overview .heading .btn {
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    min-height: 34px;
+    margin: 0;
+    border-radius: 6px;
+    padding: 7px 11px;
+    font-size: 11px;
+    z-index: 2;
+  }
+  .embedded #invoices {
+    border: 0;
+    border-radius: 0;
+  }
+  .embedded #invoices > .panel-header {
+    padding: 21px 19px 17px;
+    padding-right: 145px;
+  }
+  .embedded #invoices h2 {
+    font-size: 16px;
+  }
+  .embedded #invoices .panel-description {
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .embedded .section-title .pill {
+    display: none;
+  }
+  .embedded .filters {
+    padding: 15px 19px;
+    background: #fafcfd;
+    gap: 10px;
+  }
+  .embedded .search input {
+    font-size: 12px;
+    min-height: 40px;
+    border-radius: 7px;
+    border-color: #91a7b4;
+  }
+  .embedded select {
+    font-size: 11px;
+    max-width: 175px;
+    border-color: #91a7b4;
+    border-radius: 6px;
+    min-height: 40px;
+  }
+  .embedded .search span {
+    top: 8px;
+  }
+  .embedded .invoice-table {
+    min-width: 600px;
+  }
+  .embedded th {
+    font-size: 10px;
+    padding: 12px 13px;
+  }
+  .embedded td {
+    font-size: 12px;
+    padding: 17px 13px;
+  }
+  .embedded .evidence summary {
+    font-size: 11px;
+    line-height: 1.8;
+  }
+  .embedded .table-footer {
+    padding: 13px 19px;
+    font-size: 11px;
+  }
+  .embedded .text-button {
+    font-size: 11px;
+    min-height: 36px;
+  }
+  .embedded .empty {
+    padding: 40px 20px;
+  }
+  @media (max-width: 760px) {
+    .embedded #invoices > .panel-header {
+      padding: 20px 16px 16px;
+      padding-right: 125px;
+    }
+    .embedded #invoices .panel-description {
+      font-size: 11px;
+    }
+    .embedded #overview .heading .btn {
+      right: 14px;
+      top: 17px;
+      font-size: 10px;
+      padding: 7px 9px;
+    }
+    .embedded .filters {
+      padding: 14px 16px;
+    }
+    .embedded select {
+      max-width: none;
+      min-height: 42px;
+      font-size: 12px;
+    }
+    .embedded .invoice-table {
+      min-width: 0;
+    }
+    .embedded .invoice-table tr {
+      padding: 18px 16px;
+      gap: 13px;
+    }
+    .embedded .invoice-table td {
+      padding: 0;
+      font-size: 12px;
+    }
+    .embedded .invoice-table .money {
+      font-size: 14px;
+    }
+    .embedded .invoice-table .evidence summary {
+      font-size: 12px;
+      min-height: 30px;
+    }
+    .embedded .invoice-table .evidence-body {
+      font-size: 12px;
+      line-height: 1.8;
+    }
+    .embedded .invoice-ref {
+      font-size: 13px;
+    }
+    .embedded .invoice-table .meta {
+      font-size: 10px;
+    }
+    .embedded .table-footer {
+      padding: 13px 16px;
+      font-size: 10px;
+    }
+  }
+}
+
+@media screen {
+  .embedded .citation-focus-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 16px;
+    background: #eff7f2;
+    border-bottom: 1px solid #d8e6dd;
+  }
+  .embedded .citation-focus-banner[hidden] {
+    display: none;
+  }
+  .embedded .citation-focus-banner strong {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #245a43;
+    overflow-wrap: anywhere;
+  }
+  .embedded .citation-focus-banner button {
+    white-space: nowrap;
+    min-height: 36px;
+  }
+  .embedded.evidence-focus #invoices > .panel-header,
+  .embedded.evidence-focus .filters,
+  .embedded.evidence-focus .table-footer,
+  .embedded.evidence-focus #overview .heading .btn {
+    display: none;
+  }
+  .embedded.evidence-focus .invoice-table {
+    margin-top: 0;
+  }
+}
+@media screen {
+  body.embedded {
+    font-size: 16px;
+    color: #173b4c;
+  }
+  .embedded #invoices h2 {
+    font-size: 21px;
+  }
+  .embedded #invoices .panel-description {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .embedded #invoices > .panel-header {
+    padding: 24px 20px;
+    padding-right: 165px;
+  }
+  .embedded #overview .heading .btn {
+    min-height: 44px;
+    font-size: 13px;
+    border-radius: 9px;
+    padding: 10px 14px;
+  }
+  .embedded .filters {
+    gap: 12px;
+    padding: 18px 20px;
+  }
+  .embedded .search input,
+  .embedded select {
+    font-size: 16px;
+    min-height: 46px;
+    border-radius: 9px;
+  }
+  .embedded th {
+    font-size: 13px;
+    color: #506976;
+    padding: 14px;
+  }
+  .embedded td {
+    font-size: 14px;
+    padding: 20px 14px;
+  }
+  .embedded .invoice-ref {
+    font-size: 16px;
+  }
+  .embedded .meta {
+    font-size: 12px;
+    color: #506976;
+  }
+  .embedded .money {
+    font-size: 16px;
+    font-variant-numeric: tabular-nums;
+  }
+  .embedded .evidence summary {
+    font-size: 14px;
+    min-height: 44px;
+    align-content: center;
+  }
+  .embedded .evidence-body {
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  .embedded .evidence-body p,
+  .embedded .evidence-body li {
+    font-size: 14px;
+  }
+  .embedded .table-footer {
+    font-size: 13px;
+    padding: 16px 20px;
+  }
+  .embedded .text-button {
+    font-size: 14px;
+    min-height: 44px;
+  }
+  .embedded .citation-focus-banner strong {
+    font-size: 14px;
+  }
+  .embedded .citation-focus-banner button {
+    min-height: 44px;
+    font-size: 14px;
+  }
+  .embedded :focus-visible {
+    outline: 3px solid #006eb8;
+    outline-offset: 3px;
+  }
+  @media (max-width: 760px) {
+    .embedded #invoices > .panel-header {
+      padding: 22px 16px;
+      padding-right: 16px;
+    }
+    .embedded #overview .heading .btn {
+      position: static;
+      margin: 14px 16px;
+      float: right;
+    }
+    .embedded #overview {
+      height: auto;
+      min-height: 60px;
+    }
+    .embedded #overview .heading {
+      display: block;
+    }
+    .embedded #invoices .panel-description {
+      font-size: 14px;
+    }
+    .embedded .filters {
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+    .embedded .search input,
+    .embedded select {
+      font-size: 16px;
+      width: 100%;
+      min-width: 0;
+    }
+    .embedded .invoice-table tr {
+      padding: 20px 16px;
+      gap: 16px;
+    }
+    .embedded .invoice-table td {
+      font-size: 14px;
+      padding: 0;
+    }
+    .embedded .invoice-table .money {
+      font-size: 16px;
+    }
+    .embedded .invoice-table .meta {
+      font-size: 12px;
+    }
+    .embedded .invoice-table .evidence summary {
+      font-size: 14px;
+      min-height: 44px;
+    }
+    .embedded .invoice-table .evidence-body {
+      font-size: 14px;
+    }
+    .embedded .table-footer {
+      font-size: 13px;
+    }
+    .embedded .citation-focus-banner {
+      align-items: start;
+      gap: 12px;
+    }
+    .embedded .citation-focus-banner strong {
+      font-size: 13px;
+    }
+    .embedded.evidence-focus #overview {
+      display: none;
+    }
+  }
+}

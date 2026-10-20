@@ -1,0 +1,53 @@
+{
+  "SUP-PMI": {
+    "counts": {
+      "matched": 96,
+      "amount_mismatch": 1,
+      "currency_mismatch": 1,
+      "ambiguous": 1,
+      "ledger_only": 1,
+      "statement_only": 1
+    },
+    "exceptions": {
+      "INV-0002": "amount_mismatch",
+      "INV-0003": "currency_mismatch",
+      "INV-0004": "ambiguous",
+      "INV-0005": "ledger_only",
+      "INV-UNRECORDED": "statement_only"
+    }
+  },
+  "SUP-AGP": {
+    "counts": {
+      "matched": 96,
+      "amount_mismatch": 1,
+      "currency_mismatch": 1,
+      "ambiguous": 1,
+      "ledger_only": 1,
+      "statement_only": 1
+    },
+    "exceptions": {
+      "INV-0002": "amount_mismatch",
+      "INV-0003": "currency_mismatch",
+      "INV-0004": "ambiguous",
+      "INV-0005": "ledger_only",
+      "INV-UNRECORDED": "statement_only"
+    }
+  },
+  "SUP-AYT": {
+    "counts": {
+      "matched": 96,
+      "amount_mismatch": 1,
+      "currency_mismatch": 1,
+      "ambiguous": 1,
+      "ledger_only": 1,
+      "statement_only": 1
+    },
+    "exceptions": {
+      "INV-0002": "amount_mismatch",
+      "INV-0003": "currency_mismatch",
+      "INV-0004": "ambiguous",
+      "INV-0005": "ledger_only",
+      "INV-UNRECORDED": "statement_only"
+    }
+  }
+}

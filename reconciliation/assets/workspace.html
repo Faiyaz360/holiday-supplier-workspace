@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="$csp" />
+    <meta name="color-scheme" content="light" />
+    <title>$destination · Supplier statement review</title>
+    <style>
+      $css
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to invoice review</a>
+    <header class="topbar">
+      <div class="brand">
+        <img
+          src="data:image/png;base64,$logo"
+          width="210"
+          height="42"
+          alt="loveholidays"
+        /><span class="brand-divider" aria-hidden="true"></span
+        ><span class="product-name">Supplier operations</span>
+      </div>
+      <span class="demo-tag">$data_label</span>
+    </header>
+    <div class="shell">
+      <aside class="sidebar">
+        <nav aria-label="Workspace">
+          <div class="nav-label">Supplier workspace</div>
+          <a class="nav-link" href="#overview" aria-current="location"
+            ><span class="nav-icon" aria-hidden="true">▦</span> Overview</a
+          ><a class="nav-link" href="#invoices"
+            ><span class="nav-icon" aria-hidden="true">≡</span> Invoice review
+            <span class="nav-count">$exceptions</span></a
+          ><a class="nav-link" href="#supplier-query"
+            ><span class="nav-icon" aria-hidden="true">✉</span> Supplier
+            query</a
+          ><a class="nav-link" href="#run-record"
+            ><span class="nav-icon" aria-hidden="true">◷</span> Run record</a
+          >
+        </nav>
+        <div class="sidebar-note">
+          <strong>Built around the evidence.</strong><br />Every invoice links
+          back to its source records.<br /><br />$data_note
+        </div>
+      </aside>
+      <main id="main">
+        $home_link$recorded_notice
+        <div class="breadcrumb">
+          Supplier operations <span>/</span> Statement reconciliation
+          <span>/</span> $supplier_id
+        </div>
+        <section id="overview" aria-labelledby="page-title">
+          <div class="heading">
+            <div>
+              <div class="eyebrow">Hotel supplier reconciliation</div>
+              <h1 id="page-title">Hotel statement review</h1>
+              <p class="subtitle">
+                $supplier_name · $destination<br />Statement $statement_id ·
+                Cutoff $cutoff
+              </p>
+            </div>
+            <button class="btn" id="print-report" type="button">
+              <span aria-hidden="true">↗</span> Print / save PDF
+            </button>
+          </div>
+          <div class="overview">
+            <div class="metric">
+              <div class="metric-label">Invoices matched</div>
+              <span class="metric-icon" aria-hidden="true">✓</span>
+              <div class="metric-value">$matched</div>
+              <div class="metric-note">$matched_rate% of invoice groups</div>
+              <div class="progress" aria-hidden="true">
+                <span class="done" style="width:$matched_rate%"></span
+                ><span class="todo" style="flex:1"></span>
+              </div>
+            </div>
+            <div class="metric alert">
+              <div class="metric-label">Need your attention</div>
+              <span class="metric-icon" aria-hidden="true">!</span>
+              <div class="metric-value">$exceptions</div>
+              <div class="metric-note">Differences to investigate</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Open ledger records</div>
+              <span class="metric-icon" aria-hidden="true">≡</span>
+              <div class="metric-value">$ledger_count</div>
+              <div class="metric-note">
+                Compared with $statement_count statement rows
+              </div>
+            </div>
+          </div>
+          <div class="workflow-status $warning" role="status">
+            <span class="status-dot" aria-hidden="true"></span>
+            <div><strong>$review</strong>$status_label</div>
+            <span class="status-end">No email sent · No account changed</span>
+          </div>
+        </section>
+        <div class="content-grid">
+          <section class="panel" id="invoices" aria-labelledby="invoices-title">
+            <div class="panel-header">
+              <div class="section-title">
+                <h2 id="invoices-title">Invoice review</h2>
+                <span class="pill">$exceptions to investigate</span>
+              </div>
+              <p class="panel-description">
+                Start with the differences. Open an invoice’s evidence to see
+                exactly what needs checking.
+              </p>
+            </div>
+            <div
+              id="citation-focus-banner"
+              class="citation-focus-banner"
+              hidden
+            >
+              <strong id="citation-focus-label">Cited invoice evidence</strong
+              ><button id="citation-show-all" class="text-button" type="button">
+                All invoices
+              </button>
+            </div>
+            <div class="filters">
+              <label class="search"
+                ><span aria-hidden="true">⌕</span
+                ><input
+                  type="search"
+                  id="invoice-search"
+                  aria-label="Search invoices"
+                  placeholder="Search invoice, booking or hotel…"
+                  autocomplete="off" /></label
+              ><label class="visually-hidden" for="invoice-filter"
+                >Filter invoice status</label
+              ><select id="invoice-filter">
+                <option value="exceptions">
+                  Needs attention ($exceptions)
+                </option>
+                <option value="all">All invoice groups ($group_count)</option>
+                <option value="matched">Matched ($matched)</option>
+                $status_options
+              </select>
+            </div>
+            <div
+              class="table-wrap"
+              role="region"
+              aria-label="Invoice evidence"
+              tabindex="0"
+            >
+              <table class="invoice-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Invoice &amp; booking</th>
+                    <th scope="col">Finding</th>
+                    <th scope="col">Statement</th>
+                    <th scope="col">Open ledger</th>
+                  </tr>
+                </thead>
+                <tbody id="invoice-rows">
+                  $invoice_rows
+                </tbody>
+              </table>
+            </div>
+            <div id="empty-state" class="empty" hidden>
+              <strong>No invoices match your search</strong>
+              <p>Try another invoice number, hotel name or status.</p>
+            </div>
+            <div class="table-footer">
+              <span id="visible-count" aria-live="polite"
+                >$exceptions of $group_count invoice groups</span
+              ><button class="text-button" id="reset-filters" type="button">
+                Reset filters
+              </button>
+            </div>
+            <noscript
+              ><p class="audit-note">
+                Search and export need JavaScript. All invoices are shown below
+                for inspection.
+              </p>
+              <style>
+                tr[data-status="matched"][hidden]{display:table-row!important}
+              </style></noscript
+            >
+          </section>
+          <aside class="rail" aria-label="Review progress and draft">
+            <section class="panel">
+              <div class="panel-header"><h2>Your review, step by step</h2></div>
+              <div class="rail-body">
+                <div class="step">
+                  <span class="step-mark" aria-hidden="true">✓</span>
+                  <div>
+                    <strong>Records reconciled</strong>
+                    <p>
+                      $statement_count statement rows checked against
+                      $ledger_count open ledger rows.
+                    </p>
+                  </div>
+                </div>
+                <div class="step">
+                  <span class="step-mark" aria-hidden="true">✓</span>
+                  <div>
+                    <strong>Evidence attached</strong>
+                    <p>
+                      $exceptions differences linked to their original source
+                      rows.
+                    </p>
+                  </div>
+                </div>
+                <div class="step">
+                  <span class="step-mark $review_step_class" aria-hidden="true"
+                    >$review_step_mark</span
+                  >
+                  <div>
+                    <strong>$review_step_title</strong>
+                    <p>$review_step_text</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section class="panel">
+              <div class="panel-header">
+                <div class="section-title">
+                  <h2>Supplier query</h2>
+                  <span class="pill">Draft only</span>
+                </div>
+              </div>
+              <div class="rail-body">
+                <div class="draft-card">
+                  <div class="eyebrow">Prepared for review</div>
+                  <strong>$supplier_name</strong>
+                  <p>
+                    Invoice differences and supporting records, together in one
+                    factual query.
+                  </p>
+                  <p>$draft_scope</p>
+                </div>
+                <div class="rail-actions">
+                  <button class="btn primary" id="copy-draft" type="button">
+                    Copy draft</button
+                  ><button class="btn" id="download-draft" type="button">
+                    Export .txt
+                  </button>
+                </div>
+                <p class="helper" id="draft-feedback" role="status">
+                  Copying or exporting does not send a message or authorise
+                  payment.
+                </p>
+                <a class="quiet-link" href="#supplier-query"
+                  >Read the full supplier query →</a
+                >
+              </div>
+            </section>
+          </aside>
+        </div>
+        <div class="lower-grid">
+          <section
+            class="panel"
+            id="supplier-query"
+            aria-labelledby="draft-title"
+          >
+            <div class="panel-header">
+              <div class="section-title">
+                <h2 id="draft-title">Supplier query draft</h2>
+                <span class="pill">$review</span>
+              </div>
+              <p class="panel-description">
+                Financial facts come from the source records. Check every item
+                before sharing this draft.
+              </p>
+            </div>
+            <div class="draft-full"><pre id="draft-text">$draft</pre></div>
+          </section>
+          <section class="panel" aria-labelledby="totals-title">
+            <div class="panel-header">
+              <h2 id="totals-title">Balances by finding</h2>
+              <p class="panel-description">
+                Currencies stay separate. These figures are source balances, not
+                a payment proposal or recovered savings.
+              </p>
+            </div>
+            <div
+              class="table-wrap"
+              role="region"
+              aria-label="Balances by outcome and currency"
+              tabindex="0"
+            >
+              <table class="totals-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Finding</th>
+                    <th scope="col">Currency</th>
+                    <th scope="col">Statement</th>
+                    <th scope="col">Open ledger</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  $totals_rows
+                </tbody>
+              </table>
+            </div>
+          </section>
+          <section class="panel" id="run-record" aria-labelledby="run-title">
+            <div class="panel-header">
+              <h2 id="run-title">Run record</h2>
+              <p class="panel-description">
+                A record of what ran, what it used and where the evidence came
+                from.
+              </p>
+            </div>
+            <dl class="audit">
+              <div>
+                <dt>Run reference</dt>
+                <dd>$run_id</dd>
+              </div>
+              <div>
+                <dt>Drafting mode</dt>
+                <dd>$drafting_mode</dd>
+              </div>
+              <div>
+                <dt>Model calls</dt>
+                <dd>$model_calls</dd>
+              </div>
+              <div>
+                <dt>Duration</dt>
+                <dd>$duration seconds</dd>
+              </div>
+              <div>
+                <dt>Model</dt>
+                <dd>$model</dd>
+              </div>
+              <div>
+                <dt>Reported tokens</dt>
+                <dd>$tokens</dd>
+              </div>
+              <div>
+                <dt>Review</dt>
+                <dd>$review</dd>
+              </div>
+              <div>
+                <dt>Messages sent</dt>
+                <dd>None</dd>
+              </div>
+            </dl>
+            $tool_history
+            <p class="audit-note">
+              $assumption<br />Repeated invoice references are grouped for
+              review. Duplicate source lines remain visible in their own
+              category. Financial differences require investigation; neither
+              record establishes who is right.
+            </p>
+          </section>
+        </div>
+        <footer class="footer">
+          <div>
+            <strong>Independent application demonstration.</strong> Not an
+            official loveholidays service.<br />$data_footer
+          </div>
+          <span>Supplier operations · $destination</span>
+        </footer>
+      </main>
+    </div>
+    <!-- Script whitespace must match the content security policy. -->
+    <!-- prettier-ignore -->
+    <script>$script</script>
+  </body>
+</html>

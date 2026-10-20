@@ -1,0 +1,1552 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>Supplier operations · loveholidays</title>
+    <style>
+      $css
+    </style>
+  </head>
+  <body class="workspace-app">
+    <a class="skip" href="#main">Skip to workspace</a>
+    <header class="app-header">
+      <div class="app-brand">
+        <img
+          src="data:image/png;base64,$logo"
+          alt="loveholidays"
+          width="168"
+          height="34"
+        /><span class="brand-divider" aria-hidden="true"></span
+        ><span>Supplier operations</span>
+      </div>
+      <nav aria-label="Main navigation">
+        <a id="statements-link" href="#main" aria-current="page">Statements</a
+        ><button id="activity-link" type="button">Activity</button
+        ><button
+          id="help-link"
+          type="button"
+          aria-controls="help-panel"
+          aria-expanded="false"
+          data-tour="help"
+        >
+          Help
+        </button>
+      </nav>
+      <div class="header-end">
+        <span class="sample-label">Sample data</span>
+        <details id="profile-menu" class="profile-menu">
+          <summary aria-label="Workspace menu">
+            <span class="avatar" aria-hidden="true">SF</span
+            ><span id="profile-name">Workspace access</span
+            ><span aria-hidden="true">⌄</span>
+          </summary>
+          <div class="profile-popover">
+            <p class="menu-caption">Workspace role</p>
+            <div id="local-profiles" hidden>
+              <button id="role-analyst" type="button">
+                Accounts analyst<span
+                  >Investigate statement differences</span
+                ></button
+              ><button id="role-reviewer" type="button">
+                Finance reviewer<span>Check and record a review</span>
+              </button>
+            </div>
+            <button id="help-menu-link" type="button">Workspace help</button
+            ><button id="manage-access" type="button">
+              Connection settings</button
+            ><button id="disconnect" type="button" disabled>
+              Close workspace
+            </button>
+            <details class="reference-settings">
+              <summary>Open a saved reference</summary>
+              <form id="open-form">
+                <label for="run-reference">Run reference</label
+                ><input
+                  id="run-reference"
+                  required
+                  pattern="[a-f0-9]{20}"
+                  maxlength="20"
+                  autocomplete="off"
+                  spellcheck="false"
+                /><button class="btn" id="open-run" type="submit" disabled>
+                  Open statement
+                </button>
+              </form>
+            </details>
+            <p id="access-summary" class="menu-note">Not connected</p>
+          </div>
+        </details>
+      </div>
+    </header>
+    <main id="main" class="workspace-main" tabindex="-1">
+      <section
+        id="access-panel"
+        class="access-gate"
+        aria-labelledby="access-title"
+        hidden
+      >
+        <span class="eyebrow">Supplier operations</span>
+        <h1 id="access-title">Open your workspace</h1>
+        <p id="access-description">
+          Use your workspace credential to continue. Your role determines which
+          actions are available.
+        </p>
+        <form id="access-form">
+          <label for="access-pass">Workspace credential</label
+          ><input
+            id="access-pass"
+            type="password"
+            minlength="16"
+            maxlength="512"
+            autocomplete="off"
+            spellcheck="false"
+            aria-describedby="pass-note"
+          /><button
+            type="button"
+            id="show-password"
+            class="password-toggle"
+            aria-controls="access-pass"
+            aria-pressed="false"
+            hidden
+          >
+            Show password
+          </button>
+          <p id="pass-note" class="helper">
+            This connection method will be replaced by company sign-in when
+            hosting is configured.
+          </p>
+          <p
+            id="login-feedback"
+            class="login-feedback"
+            role="status"
+            hidden
+          ></p>
+          <button class="btn primary" id="connect" type="submit">
+            Open workspace
+          </button>
+        </form>
+        <button id="resume-local" class="btn primary" type="button" hidden>
+          Open workspace
+        </button>
+      </section>
+      <div
+        id="workspace-status"
+        class="workspace-status"
+        role="status"
+        aria-live="polite"
+        data-tone="pending"
+      >
+        <strong id="status-title">Opening workspace</strong>
+        <p id="status-detail">Loading your statement and available actions.</p>
+      </div>
+      <div id="workspace-content" hidden>
+        <div class="workspace-layout">
+          <nav class="workspace-views" aria-label="Statement workspace views">
+            <button id="view-statement" type="button" aria-pressed="true">
+              Statement</button
+            ><button id="view-followup" type="button" aria-pressed="false">
+              Follow-up <span id="followup-count"></span></button
+            ><button id="view-quality" type="button" aria-pressed="false">
+              Quality</button
+            ><button id="view-responses" type="button" aria-pressed="false">
+              Hotel replies</button
+            ><button id="view-comparison" type="button" aria-pressed="false">
+              Compare statements</button
+            ><button id="view-decisions" type="button" aria-pressed="false">
+              <span aria-hidden="true">🧪</span> AI model comparison</button
+            ><button id="view-about" type="button" aria-pressed="false">
+              How this works
+            </button>
+          </nav>
+          <div class="workspace-stage">
+            <section class="page-heading">
+              <div>
+                <div class="breadcrumb">
+                  Finance <span aria-hidden="true">/</span> Statements
+                </div>
+                <h1 id="workspace-title" tabindex="-1">
+                  Hotel statement review
+                </h1>
+                <p id="supplier-name" class="supplier-name">
+                  Supplier statement
+                </p>
+                <p id="run-description" class="statement-caption">
+                  Open a statement to begin.
+                </p>
+              </div>
+              <div class="page-actions">
+                <span id="statement-state" class="state-chip">Not opened</span
+                ><button class="btn" id="create-run" type="button" disabled>
+                  Open statement</button
+                ><button class="btn" id="new-review" type="button" hidden>
+                  New review</button
+                ><button
+                  class="btn icon-button"
+                  id="reload-run"
+                  type="button"
+                  disabled
+                >
+                  <span aria-hidden="true">↻</span> Refresh
+                </button>
+              </div>
+            </section>
+
+            <div id="statement-view">
+              <details
+                id="statement-import"
+                class="statement-import"
+                data-tour="upload"
+              >
+                <summary>
+                  <span
+                    ><strong>Add a hotel statement</strong
+                    ><span>Upload a CSV or try the Mallorca sample</span></span
+                  ><span class="import-plus" aria-hidden="true">+</span>
+                </summary>
+                <div class="import-body">
+                  <p class="import-intro">
+                    Compare a statement with the sample Mallorca finance ledger.
+                    Use fictional or anonymised records.
+                  </p>
+                  <div id="statement-drop" class="statement-drop">
+                    <span class="upload-symbol" aria-hidden="true">↑</span>
+                    <div>
+                      <strong>Drop your statement here</strong>
+                      <p>UTF-8 CSV · up to 1 MB and 1,000 rows</p>
+                    </div>
+                    <label class="btn" for="statement-file">Choose CSV</label
+                    ><input
+                      class="visually-hidden"
+                      id="statement-file"
+                      type="file"
+                      accept=".csv,text/csv"
+                      aria-describedby="upload-help"
+                    />
+                  </div>
+                  <div class="scenario-picker">
+                    <label for="sample-scenario">Choose a hotel case</label
+                    ><select
+                      id="sample-scenario"
+                      aria-describedby="scenario-description"
+                    >
+                      <option value="credit">Missing credit note</option>
+                      <option value="currency">Currency mismatch</option>
+                      <option value="duplicate">Duplicate invoice</option>
+                    </select>
+                    <p id="scenario-description" class="helper"></p>
+                    <p class="helper">
+                      Each task uses the full fictional Mallorca statement.
+                      Preview it below, then confirm to start a separate saved
+                      review.
+                    </p>
+                  </div>
+                  <div class="import-samples">
+                    <button class="quiet-link" id="use-sample" type="button">
+                      Use sample statement</button
+                    ><button
+                      class="quiet-link"
+                      id="download-sample"
+                      type="button"
+                    >
+                      Download sample
+                    </button>
+                  </div>
+                  <details class="import-help">
+                    <summary>CSV columns and supported records</summary>
+                    <p id="upload-help">
+                      This workspace supports supplier SUP-PMI and the sample
+                      finance snapshot dated 18 October 2026. Keep the template
+                      headers and use one statement, supplier and cutoff date
+                      per file. Keep amounts in their original currencies; no
+                      exchange rate is applied.
+                    </p>
+                    <code
+                      >statement_id, supplier_id, cutoff_date, line_id,
+                      invoice_ref, currency, claimed_amount</code
+                    >
+                  </details>
+                  <p
+                    id="import-feedback"
+                    class="import-feedback"
+                    role="status"
+                    aria-live="polite"
+                  >
+                    Choose a file to preview it. Previewing does not use Gemini
+                    or save a statement.
+                  </p>
+                  <section
+                    id="import-preview"
+                    class="import-preview"
+                    aria-labelledby="import-preview-title"
+                    data-tour="preview"
+                    hidden
+                  >
+                    <div class="import-preview-heading">
+                      <div>
+                        <span class="eyebrow">Ready to compare</span>
+                        <h2 id="import-preview-title">Statement preview</h2>
+                      </div>
+                      <span id="import-row-count" class="state-chip"></span>
+                    </div>
+                    <p id="import-summary"></p>
+                    <div
+                      class="import-table-wrap"
+                      role="region"
+                      aria-label="Preview of the first ten statement rows"
+                      tabindex="0"
+                    >
+                      <table class="import-table">
+                        <thead>
+                          <tr>
+                            <th scope="col">Invoice</th>
+                            <th scope="col">Currency</th>
+                            <th scope="col">Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody id="import-rows"></tbody>
+                      </table>
+                    </div>
+                    <p class="helper">
+                      First ten rows shown. Confirming saves a separate
+                      statement; your earlier reviews stay unchanged.
+                    </p>
+                    <button
+                      id="confirm-import"
+                      class="btn primary"
+                      type="button"
+                      data-tour="reconcile"
+                      disabled
+                    >
+                      Confirm and reconcile
+                    </button>
+                  </section>
+                </div>
+              </details>
+              <section
+                id="scenario-task"
+                class="scenario-task"
+                aria-labelledby="scenario-title"
+                hidden
+              >
+                <div>
+                  <span class="eyebrow">Your hotel case</span>
+                  <h2 id="scenario-title"></h2>
+                  <p id="scenario-instruction"></p>
+                </div>
+                <div class="scenario-actions">
+                  <button id="scenario-evidence" class="btn" type="button">
+                    1. Inspect invoice</button
+                  ><button id="scenario-ask" class="btn" type="button">
+                    2. Prepare a question</button
+                  ><button id="scenario-followup" class="btn" type="button">
+                    3. Record next step
+                  </button>
+                </div>
+              </section>
+              <section
+                data-tour="differences"
+                class="summary-strip"
+                aria-label="Statement summary"
+              >
+                <div>
+                  <span class="summary-dot green" aria-hidden="true"></span
+                  ><strong id="matched-count">—</strong><span>Matched</span>
+                </div>
+                <div>
+                  <span class="summary-dot amber" aria-hidden="true"></span
+                  ><strong id="exception-count">—</strong
+                  ><span>Need review</span>
+                </div>
+                <div>
+                  <strong id="ledger-count">—</strong
+                  ><span>Ledger invoices</span>
+                </div>
+                <div class="summary-context">
+                  <span id="cutoff-label">Statement cutoff</span
+                  ><strong id="cutoff-date">—</strong>
+                </div>
+              </section>
+              <div class="review-layout">
+                <section
+                  data-tour="evidence"
+                  class="invoice-workspace"
+                  aria-label="Invoice workspace"
+                >
+                  <p id="evidence-description" class="visually-hidden">
+                    Invoice evidence and source records.
+                  </p>
+                  <div id="report-empty" class="report-empty">
+                    <span class="empty-symbol" aria-hidden="true">≡</span>
+                    <h2>No statement open</h2>
+                    <p>
+                      Open the supplier statement to see its invoices and
+                      balances.
+                    </p>
+                  </div>
+                  <iframe
+                    id="evidence-frame"
+                    title="Saved invoice evidence"
+                    sandbox="allow-scripts allow-downloads allow-modals"
+                    hidden
+                  ></iframe>
+                </section>
+                <aside
+                  data-tour="assistant"
+                  class="assistant-panel"
+                  aria-labelledby="assistant-title"
+                >
+                  <header class="assistant-heading">
+                    <span class="assistant-mark" aria-hidden="true">✦</span>
+                    <div>
+                      <span class="eyebrow">Evidence-backed assistance</span>
+                      <h2 id="assistant-title">Statement assistant</h2>
+                    </div>
+                    <span id="model-badge" class="model-badge" hidden
+                      >Local model</span
+                    >
+                  </header>
+                  <div
+                    class="assistant-tabs"
+                    role="tablist"
+                    aria-label="Assistant workspace"
+                  >
+                    <button
+                      type="button"
+                      role="tab"
+                      id="tab-assistant"
+                      aria-controls="panel-assistant"
+                      aria-selected="true"
+                      tabindex="0"
+                    >
+                      Assistant</button
+                    ><button
+                      type="button"
+                      role="tab"
+                      id="tab-query"
+                      aria-controls="panel-query"
+                      aria-selected="false"
+                      tabindex="-1"
+                    >
+                      Supplier email
+                      <span
+                        id="query-dot"
+                        hidden
+                        aria-label="Draft available"
+                      ></span></button
+                    ><button
+                      type="button"
+                      role="tab"
+                      id="tab-activity"
+                      aria-controls="panel-activity"
+                      aria-selected="false"
+                      tabindex="-1"
+                    >
+                      Activity
+                    </button>
+                  </div>
+                  <section
+                    id="panel-assistant"
+                    class="assistant-body"
+                    role="tabpanel"
+                    aria-labelledby="tab-assistant"
+                  >
+                    <div class="assistant-intro">
+                      <span id="assistant-state" class="assistant-state"
+                        >Ready when you are</span
+                      >
+                      <h3 id="assistant-headline">
+                        Make sense of the differences.
+                      </h3>
+                      <p id="assistant-summary">
+                        I can check the invoice evidence and prepare a supplier
+                        query for you to review.
+                      </p>
+                    </div>
+                    <section
+                      class="question-section"
+                      aria-labelledby="question-title"
+                      data-tour="questions"
+                    >
+                      <h4 id="question-title">Ask about this statement</h4>
+                      <p>
+                        Choose a question or write your own. Answers link to the
+                        saved evidence.
+                      </p>
+                      <div class="suggested-questions">
+                        <button id="suggest-invoice" type="button">
+                          Explain an invoice difference</button
+                        ><button id="suggest-priority" type="button">
+                          What needs checking first?
+                        </button>
+                      </div>
+                      <form id="question-form">
+                        <label class="visually-hidden" for="question-input"
+                          >Your question about this statement</label
+                        ><textarea
+                          id="question-input"
+                          maxlength="1000"
+                          rows="2"
+                          placeholder="Why does this invoice differ?"
+                          required
+                          aria-describedby="question-use-note"
+                        ></textarea>
+                        <div class="question-send">
+                          <span id="question-use-note"
+                            >Uses Gemini when you ask.</span
+                          ><button
+                            class="btn primary"
+                            id="ask-question"
+                            type="submit"
+                            disabled
+                          >
+                            Ask assistant <span aria-hidden="true">↑</span>
+                          </button>
+                        </div>
+                      </form>
+                      <p class="question-privacy">
+                        Questions are visible to everyone with workspace access.
+                      </p>
+                      <p
+                        id="question-feedback"
+                        class="question-feedback"
+                        role="status"
+                        aria-live="polite"
+                      >
+                        Open a statement to ask a question.
+                      </p>
+                      <ol
+                        id="conversation-list"
+                        class="conversation-list"
+                        aria-label="Saved statement questions"
+                      ></ol>
+                    </section>
+                    <ol class="assistant-steps">
+                      <li id="step-records">
+                        <span class="step-number">1</span>
+                        <div>
+                          <strong>Compare the records</strong
+                          ><span>Statement and ledger balances</span>
+                        </div>
+                        <span class="step-result" aria-label="Status"
+                          >Ready</span
+                        >
+                      </li>
+                      <li id="step-investigate">
+                        <span class="step-number">2</span>
+                        <div>
+                          <strong>Investigate differences</strong
+                          ><span>Check the supporting invoices</span>
+                        </div>
+                        <span class="step-result" aria-label="Status"
+                          >Waiting</span
+                        >
+                      </li>
+                      <li id="step-query">
+                        <span class="step-number">3</span>
+                        <div>
+                          <strong>Prepare a supplier query</strong
+                          ><span>You review it before sharing</span>
+                        </div>
+                        <span class="step-result" aria-label="Status"
+                          >Waiting</span
+                        >
+                      </li>
+                    </ol>
+                    <button
+                      class="btn primary agent-action"
+                      id="execute-run"
+                      type="button"
+                      disabled
+                    >
+                      <span aria-hidden="true">✦</span
+                      ><span id="execute-label">Investigate differences</span>
+                    </button>
+                    <p class="execution-note" id="execution-note">
+                      Open a statement to begin.
+                    </p>
+                    <button
+                      id="show-query"
+                      class="btn query-action"
+                      type="button"
+                      disabled
+                    >
+                      View supplier query <span aria-hidden="true">→</span>
+                    </button>
+                    <div class="assistant-boundary">
+                      <span aria-hidden="true">✓</span>
+                      <p>
+                        You're in control. The assistant cannot send messages,
+                        approve its own work or change a balance.
+                      </p>
+                    </div>
+                    <details class="assistant-about">
+                      <summary>About this assistant</summary>
+                      <p id="model-note">
+                        Google ADK connects the model to scoped invoice tools.
+                        Financial figures come from the source records.
+                      </p>
+                    </details>
+                  </section>
+                  <section
+                    id="panel-query"
+                    class="assistant-body"
+                    role="tabpanel"
+                    aria-labelledby="tab-query"
+                    hidden
+                  >
+                    <div class="query-heading">
+                      <div>
+                        <span class="eyebrow">Draft email</span>
+                        <h3>Review your message to the hotel</h3>
+                      </div>
+                      <span id="query-state" class="state-chip">Not ready</span>
+                    </div>
+                    <p class="query-caption" id="query-caption">
+                      The query will appear alongside its invoice evidence.
+                    </p>
+                    <div class="query-actions">
+                      <button
+                        class="btn primary"
+                        id="copy-query"
+                        type="button"
+                        disabled
+                      >
+                        Copy email draft</button
+                      ><button
+                        class="btn"
+                        id="export-query"
+                        type="button"
+                        disabled
+                      >
+                        Download draft
+                      </button>
+                    </div>
+                    <pre id="query-text" class="query-text" tabindex="0">
+Open a statement to view its query.</pre
+                    >
+                    <details id="query-source" class="query-source">
+                      <summary>Original saved query and source rows</summary>
+                      <pre id="query-source-text" class="query-text"></pre>
+                      <button
+                        id="query-view-evidence"
+                        type="button"
+                        class="btn"
+                      >
+                        Return to invoice evidence
+                      </button>
+                    </details>
+                    <p
+                      id="query-feedback"
+                      class="query-feedback"
+                      role="status"
+                      hidden
+                    ></p>
+                    <pre
+                      id="copy-fallback"
+                      class="copy-fallback"
+                      tabindex="0"
+                      hidden
+                    ></pre>
+                    <div class="review-section">
+                      <h3>Confirm your review</h3>
+                      <p id="review-note">
+                        A finance reviewer checks the evidence and the complete
+                        query.
+                      </p>
+                      <button
+                        id="switch-reviewer"
+                        class="btn"
+                        type="button"
+                        hidden
+                      >
+                        Continue as finance reviewer
+                      </button>
+                      <form id="review-form">
+                        <label for="reviewer-name">Reviewed by</label
+                        ><input
+                          id="reviewer-name"
+                          required
+                          maxlength="254"
+                          autocomplete="name"
+                          placeholder="Your name"
+                        /><label class="confirmation"
+                          ><input
+                            type="checkbox"
+                            id="review-confirm"
+                            required
+                          /><span
+                            >I checked the invoice evidence and the complete
+                            query.</span
+                          ></label
+                        ><button
+                          class="btn primary"
+                          id="review-run"
+                          type="submit"
+                          disabled
+                        >
+                          Record review
+                        </button>
+                      </form>
+                    </div>
+                  </section>
+                  <section
+                    id="panel-activity"
+                    class="assistant-body"
+                    role="tabpanel"
+                    aria-labelledby="tab-activity"
+                    hidden
+                  >
+                    <div class="query-heading">
+                      <div>
+                        <span class="eyebrow">Investigation record</span>
+                        <h3>What happened</h3>
+                      </div>
+                    </div>
+                    <p class="query-caption">
+                      Recorded actions for this statement. Opening this view
+                      does not run the agent.
+                    </p>
+                    <ol id="activity-list" class="activity-list">
+                      <li>No investigation recorded yet.</li>
+                    </ol>
+                    <details class="run-details">
+                      <summary>Run details</summary>
+                      <dl>
+                        <div>
+                          <dt>Reference</dt>
+                          <dd id="detail-reference">—</dd>
+                        </div>
+                        <div>
+                          <dt>Model</dt>
+                          <dd id="detail-model">—</dd>
+                        </div>
+                        <div>
+                          <dt>Model requests</dt>
+                          <dd id="detail-calls">—</dd>
+                        </div>
+                        <div>
+                          <dt>Reported tokens</dt>
+                          <dd id="detail-tokens">—</dd>
+                        </div>
+                        <div>
+                          <dt>Saved revision</dt>
+                          <dd id="detail-revision">—</dd>
+                        </div>
+                      </dl>
+                    </details>
+                  </section>
+                </aside>
+              </div>
+            </div>
+            <section
+              id="followup-view"
+              class="operations-view"
+              aria-labelledby="followup-title"
+              tabindex="-1"
+              hidden
+            >
+              <header class="view-heading">
+                <div>
+                  <span class="eyebrow">From difference to decision</span>
+                  <h2 id="followup-title">Invoice follow-up</h2>
+                  <p>
+                    Track the work around each difference. Original financial
+                    evidence stays unchanged.
+                  </p>
+                </div>
+                <button id="refresh-cases" type="button" class="btn">
+                  Refresh follow-up
+                </button>
+              </header>
+              <div class="followup-summary" id="followup-summary" role="status">
+                Open this view to load follow-up.
+              </div>
+              <p class="helper">
+                Resolved records your conclusion; it does not change a balance
+                or prove the two sources agree. Names are self-reported.
+              </p>
+              <div class="case-layout">
+                <section
+                  class="case-list-panel"
+                  aria-label="Invoice differences"
+                >
+                  <label for="case-filter">Show cases</label
+                  ><select id="case-filter">
+                    <option value="all">All differences</option>
+                    <option value="checking">Needs checking</option>
+                    <option value="waiting">Waiting for hotel</option>
+                    <option value="resolved">Resolved</option>
+                  </select>
+                  <div id="case-list" class="case-list"></div>
+                </section>
+                <section
+                  id="case-detail"
+                  class="case-detail"
+                  aria-labelledby="case-title"
+                  hidden
+                >
+                  <span class="eyebrow">Selected difference</span>
+                  <h3 id="case-title"></h3>
+                  <p id="case-finding"></p>
+                  <div id="case-balances" class="case-balances"></div>
+                  <button id="case-evidence" type="button" class="btn">
+                    View source evidence
+                  </button>
+                  <form id="case-form">
+                    <label for="case-status">Follow-up status</label
+                    ><select id="case-status">
+                      <option value="checking">Needs checking</option>
+                      <option value="waiting">Waiting for hotel</option>
+                      <option value="resolved">Resolved</option></select
+                    ><label for="case-actor">Your name</label
+                    ><input
+                      id="case-actor"
+                      maxlength="254"
+                      required
+                      autocomplete="name"
+                      placeholder="Who is recording this update?"
+                    /><label for="case-note">What happened?</label
+                    ><textarea
+                      id="case-note"
+                      maxlength="500"
+                      rows="3"
+                      required
+                      placeholder="Explain what you checked, requested or concluded."
+                    ></textarea>
+                    <p class="helper">
+                      Up to 500 characters. Saved history cannot be edited.
+                    </p>
+                    <button id="save-case" type="submit" class="btn primary">
+                      Save update
+                    </button>
+                  </form>
+                  <p id="case-feedback" role="status" aria-live="polite"></p>
+                  <section
+                    class="case-conclusion"
+                    aria-labelledby="case-outcome-title"
+                  >
+                    <div class="case-outcome-heading">
+                      <h4 id="case-outcome-title">Case outcome</h4>
+                      <span id="case-outcome-status" class="state-chip"></span>
+                    </div>
+                    <div id="case-outcome" class="case-outcome"></div>
+                  </section>
+                  <h4>Follow-up history</h4>
+                  <ol id="case-history" class="case-history"></ol>
+                </section>
+              </div>
+            </section>
+            <section
+              id="quality-view"
+              class="operations-view"
+              aria-labelledby="quality-title"
+              tabindex="-1"
+              hidden
+            >
+              <header class="view-heading">
+                <div>
+                  <span class="eyebrow">Evidence before confidence</span>
+                  <h2 id="quality-title">Quality &amp; verification</h2>
+                  <p>
+                    Separate checks on this statement from saved evaluations of
+                    the sample agent.
+                  </p>
+                </div>
+                <button id="refresh-quality" type="button" class="btn">
+                  Refresh checks
+                </button>
+              </header>
+              <p id="quality-feedback" role="status" aria-live="polite">
+                Open this view to load quality checks.
+              </p>
+              <section
+                id="current-quality"
+                aria-labelledby="current-quality-title"
+              >
+                <h3 id="current-quality-title">This statement</h3>
+                <p id="quality-context"></p>
+                <div id="quality-usage" class="quality-usage"></div>
+                <ul id="quality-checks" class="quality-checks"></ul>
+                <p class="helper">
+                  Not run means no applicable completed investigation is saved.
+                  These checks verify stored evidence and the rendered draft;
+                  they do not certify every explanation or all security
+                  properties. Investigation usage is shown here; question and
+                  reply usage appears beside each saved answer or analysis.
+                </p>
+              </section>
+              <section
+                id="historical-quality"
+                aria-labelledby="historical-title"
+              >
+                <div class="quality-section-heading">
+                  <span class="eyebrow">A separate evidence set</span>
+                  <h3 id="historical-title">Saved agent evaluations</h3>
+                  <p id="historical-context"></p>
+                </div>
+                <div id="historical-metrics" class="historical-metrics"></div>
+                <p class="helper">
+                  Wording similarity measures overlap with a reference answer.
+                  It is not a financial correctness score. A recorded refusal
+                  alone does not prove that every possible attack is blocked.
+                </p>
+                <div id="evaluation-cases" class="evaluation-cases"></div>
+                <details class="snapshot-provenance">
+                  <summary>Evaluation source records</summary>
+                  <p id="evaluation-provenance"></p>
+                </details>
+              </section>
+            </section>
+            <section
+              id="responses-view"
+              class="operations-view"
+              aria-labelledby="responses-title"
+              tabindex="-1"
+              hidden
+            >
+              <header class="view-heading">
+                <div>
+                  <span class="eyebrow">Close the loop</span>
+                  <h2 id="responses-title">Hotel replies</h2>
+                  <p>
+                    Keep the original reply, check its claims against the
+                    invoice, then decide the next action.
+                  </p>
+                </div>
+                <button id="refresh-replies" type="button" class="btn">
+                  Refresh saved replies
+                </button>
+              </header>
+              <div class="response-layout">
+                <div>
+                  <form id="reply-form" class="workflow-card">
+                    <h3>Add a hotel reply</h3>
+                    <p class="helper">
+                      Paste correspondence or load a UTF-8 .txt or .csv extract.
+                      Use fictional or anonymised text. Up to 8,000 characters;
+                      file limit 32 KB.
+                    </p>
+                    <label for="reply-file" class="btn">Choose reply file</label
+                    ><input
+                      id="reply-file"
+                      class="visually-hidden"
+                      type="file"
+                      accept=".txt,.csv,text/plain,text/csv"
+                    /><button
+                      id="use-reply-sample"
+                      class="quiet-link"
+                      type="button"
+                    >
+                      Use sample hotel reply</button
+                    ><label for="reply-filename">Source name</label
+                    ><input
+                      id="reply-filename"
+                      value="pasted-reply.txt"
+                      maxlength="120"
+                      required
+                    /><label for="reply-text">Original reply text</label
+                    ><textarea
+                      id="reply-text"
+                      rows="8"
+                      minlength="12"
+                      maxlength="8000"
+                      required
+                      placeholder="Paste the hotel's reply, including its invoice reference…"
+                    ></textarea>
+                    <p class="helper">
+                      Uploading text makes no model request. Analyse reply uses
+                      Gemini. The original text and its fingerprint stay with
+                      the saved analysis.
+                    </p>
+                    <button
+                      id="analyse-reply"
+                      class="btn primary"
+                      type="submit"
+                    >
+                      Analyse reply
+                    </button>
+                  </form>
+                  <form id="reply-action-form" class="workflow-card" hidden>
+                    <h3 id="reply-action-title">Record follow-up</h3>
+                    <p id="reply-action-context" class="helper"></p>
+                    <div
+                      id="reply-existing-history"
+                      class="reply-current-history"
+                    ></div>
+                    <label for="reply-status">Your follow-up decision</label
+                    ><select id="reply-status">
+                      <option value="checking">Needs checking</option>
+                      <option value="waiting">Waiting for hotel</option>
+                      <option value="resolved">Resolved</option></select
+                    ><label for="reply-actor">Your name</label
+                    ><input
+                      id="reply-actor"
+                      maxlength="254"
+                      required
+                      autocomplete="name"
+                    /><label for="reply-note">Your confirmation note</label
+                    ><textarea
+                      id="reply-note"
+                      rows="4"
+                      maxlength="350"
+                      required
+                    ></textarea>
+                    <p class="helper">
+                      Confirming records your decision with the reply reference.
+                      Resolved does not prove settlement or change any financial
+                      balance. Nothing is sent to the hotel.
+                    </p>
+                    <button
+                      id="confirm-reply-action"
+                      class="btn primary"
+                      type="submit"
+                    >
+                      Confirm and record follow-up
+                    </button>
+                  </form>
+                </div>
+                <div>
+                  <p
+                    id="reply-feedback"
+                    class="workflow-feedback"
+                    role="status"
+                    aria-live="polite"
+                  ></p>
+                  <h3 class="saved-replies-heading">
+                    Saved correspondence &amp; proposals
+                  </h3>
+                  <div id="reply-list" class="reply-list"></div>
+                </div>
+              </div>
+            </section>
+            <section
+              id="comparison-view"
+              class="operations-view"
+              aria-labelledby="comparison-title"
+              tabindex="-1"
+              hidden
+            >
+              <header class="view-heading">
+                <div>
+                  <span class="eyebrow">See what moved</span>
+                  <h2 id="comparison-title">Compare statements</h2>
+                  <p>
+                    Compare two saved snapshots. An invoice disappearing from a
+                    statement does not prove it was paid.
+                  </p>
+                </div>
+                <button id="load-comparison-example" class="btn" type="button">
+                  Explore a sample comparison
+                </button>
+              </header>
+              <form id="comparison-form" class="comparison-form workflow-card">
+                <div>
+                  <label for="comparison-previous"
+                    >Earlier statement reference</label
+                  ><input
+                    id="comparison-previous"
+                    pattern="[a-f0-9]{20}"
+                    maxlength="20"
+                    required
+                    placeholder="Paste a saved statement reference"
+                    aria-describedby="comparison-help"
+                  />
+                </div>
+                <div>
+                  <span class="field-label">Open statement reference</span
+                  ><code
+                    id="comparison-current-ref"
+                    class="statement-reference"
+                  ></code
+                  ><button
+                    id="copy-statement-reference"
+                    class="quiet-link"
+                    type="button"
+                  >
+                    Copy reference
+                  </button>
+                </div>
+                <button
+                  id="compare-statements"
+                  class="btn primary"
+                  type="submit"
+                >
+                  Compare saved statements
+                </button>
+                <p id="comparison-help" class="helper">
+                  Use a reference from Workspace menu → Open a saved reference,
+                  or copy it here before opening another statement. The previous
+                  statement you opened is filled in when available. Comparing
+                  makes no model request and changes neither statement.
+                </p>
+              </form>
+              <p
+                id="comparison-feedback"
+                class="workflow-feedback"
+                role="status"
+                aria-live="polite"
+              ></p>
+              <p id="comparison-summary" class="comparison-summary">
+                Compare two saved statements to see what changed.
+              </p>
+              <p class="helper">
+                Amounts remain in their original currencies. Before and After
+                distinguish the hotel statement from the saved finance ledger.
+                Still needs review describes source findings, separately from
+                human follow-up status.
+              </p>
+              <div id="comparison-list" class="comparison-list"></div>
+            </section>
+            <section
+              id="decisions-view"
+              class="decision-lab"
+              tabindex="-1"
+              aria-labelledby="decision-title"
+              hidden
+            >
+              <div class="decision-heading">
+                <div>
+                  <span class="eyebrow"
+                    >Hotel operations · AI model comparison</span
+                  >
+                  <h2 id="decision-title">🧪 AI model comparison</h2>
+                  <p>
+                    Compare specialist decision models with Gemini on exactly
+                    the same task. See what each finds, how long it takes and
+                    what it costs.
+                  </p>
+                </div>
+                <span class="decision-tag">Fictional cases</span>
+              </div>
+              <div class="decision-setup">
+                <section class="workflow-card">
+                  <label for="decision-case">Choose a hotel case</label
+                  ><select id="decision-case"></select>
+                  <p id="decision-mode" class="helper"></p>
+                  <blockquote
+                    id="decision-source"
+                    class="decision-source"
+                  ></blockquote>
+                  <div class="decision-document">
+                    <img
+                      id="decision-image"
+                      class="decision-image"
+                      alt="Fictional hotel credit note used for the visual reading experiment"
+                      hidden
+                    />
+                    <div
+                      id="decision-box"
+                      class="decision-box"
+                      role="img"
+                      aria-label="Experimental predicted invoice-reference region"
+                      hidden
+                    ></div>
+                  </div>
+                  <div class="decision-actions">
+                    <button id="decision-run" class="btn primary" type="button">
+                      Run fresh comparison · paid</button
+                    ><button id="decision-refresh" class="btn" type="button">
+                      Reload saved results
+                    </button>
+                  </div>
+                  <p id="decision-availability" class="helper"></p>
+                  <p id="decision-budget" class="helper"></p>
+                  <p id="decision-feedback" role="status" aria-live="polite">
+                    Choose a case. Opening this view and replaying saved results
+                    make no model calls.
+                  </p>
+                </section>
+                <aside class="workflow-card decision-explainer">
+                  <span class="eyebrow">What is being tested?</span>
+                  <h3>Small decisions before an investigation.</h3>
+                  <ol>
+                    <li>
+                      <strong>Detect claims.</strong> Credit, payment, currency,
+                      duplicates and documents.
+                    </li>
+                    <li>
+                      <strong>Suggest a next step.</strong> Investigate, prepare
+                      a document or clarify.
+                    </li>
+                    <li>
+                      <strong>Prioritise review.</strong> Use explicit timing
+                      context, without authorising payment.
+                    </li>
+                  </ol>
+                  <p>
+                    Jev and d1-ultra return typed decisions. Gemini generates a
+                    structured answer to the same questions. Rules provide a
+                    transparent starting point.
+                  </p>
+                  <p class="helper">
+                    The normal investigation still uses Google ADK and Gemini. A
+                    hotel claim is not proof that a credit or payment is
+                    recorded.
+                  </p>
+                </aside>
+              </div>
+              <div class="decision-comparison-heading">
+                <div>
+                  <h3>Compare the same task</h3>
+                  <p id="decision-provenance">
+                    Results will appear after an actual comparison. No
+                    demonstration numbers are pre-filled.
+                  </p>
+                </div>
+                <span id="decision-recorded" class="decision-tag" hidden
+                  >Recorded results</span
+                >
+              </div>
+              <div id="decision-summary" class="decision-summary"></div>
+              <div id="decision-results" class="decision-results"></div>
+              <section
+                id="decision-whatif"
+                class="workflow-card decision-whatif"
+                hidden
+              >
+                <div>
+                  <span class="eyebrow">Experiment without another call</span>
+                  <h3>When should a person take over?</h3>
+                  <p>
+                    Raise the threshold to send more uncertain next-step
+                    suggestions for human review. This changes the display only;
+                    the saved model output stays unchanged.
+                  </p>
+                </div>
+                <label for="decision-threshold"
+                  >Minimum next-step probability
+                  <output id="decision-threshold-value">80%</output></label
+                ><input
+                  id="decision-threshold"
+                  type="range"
+                  min="0.5"
+                  max="0.95"
+                  step="0.05"
+                  value="0.8"
+                />
+                <div id="decision-routes" class="decision-routes"></div>
+                <h4>Which saved case needs review first?</h4>
+                <p class="helper">
+                  Ordered by advisory timing score on the same four-level
+                  rubric. Balances and different currencies are not ranked by
+                  value.
+                </p>
+                <div id="decision-queue" class="decision-routes"></div>
+                <p class="helper">
+                  Probability is the model’s estimate, not its measured
+                  accuracy. This threshold is experimental.
+                </p>
+              </section>
+              <details class="workflow-card decision-method">
+                <summary>How to read the comparison</summary>
+                <p>
+                  Correctness is agreement with author-written draft labels on
+                  fictional examples, not independently validated production
+                  accuracy. Per-case details show expected decisions and
+                  mistakes. Failed requests stay visible; successful-response
+                  timing alone does not describe reliability.
+                </p>
+                <p>
+                  Costs are US dollars. Reported provider charges and
+                  token-price estimates are labelled separately. Per-1,000
+                  figures are projections for the same task, excluding purchase
+                  fees, taxes and hosting. Unknown costs make totals incomplete.
+                </p>
+                <p>
+                  These are small classification and routing tasks. Full invoice
+                  investigations are a separate workflow. Adding a classifier
+                  before an unchanged investigation is extra cost, not a
+                  demonstrated saving.
+                </p>
+                <p>
+                  Visual document checks are reported separately. Reading a
+                  credit note does not authenticate it or prove ledger
+                  settlement. No experiment changes your invoices or saves a
+                  follow-up decision.
+                </p>
+              </details>
+            </section>
+            <section
+              id="about-view"
+              class="operations-view about-workflow"
+              aria-labelledby="about-title"
+              tabindex="-1"
+              hidden
+            >
+              <header class="view-heading">
+                <div>
+                  <span class="eyebrow">Evidence before a decision</span>
+                  <h2 id="about-title">How this works</h2>
+                  <p>
+                    Matching is exact. The assistant investigates. You decide
+                    what happens next.
+                  </p>
+                </div>
+              </header>
+              <div class="workflow-story">
+                <article class="workflow-card">
+                  <span class="story-number">1</span>
+                  <h3>Compare the records</h3>
+                  <p>
+                    Ordinary code compares each invoice and currency using exact
+                    decimal amounts. It keeps duplicates and missing records
+                    visible. It does not guess an exchange rate or why a balance
+                    changed.
+                  </p>
+                </article>
+                <article class="workflow-card">
+                  <span class="story-number">2</span>
+                  <h3>Investigate with evidence</h3>
+                  <p>
+                    Google ADK gives Gemini a small set of tools for the
+                    selected supplier and statement. Answers link to source
+                    rows. Hotel-response proposals must quote the original reply
+                    and cite an invoice the agent has read.
+                  </p>
+                </article>
+                <article class="workflow-card">
+                  <span class="story-number">3</span>
+                  <h3>Make the human decision</h3>
+                  <p>
+                    You inspect the evidence and confirm follow-up. Hotel claims
+                    stay labelled as unverified. The assistant cannot change a
+                    balance, send a supplier message, authorise payment or
+                    confirm its own work.
+                  </p>
+                </article>
+              </div>
+              <div class="about-details">
+                <details class="workflow-card">
+                  <summary>What Google ADK does</summary>
+                  <p>
+                    ADK runs the agent's tool calls. The question agent reads
+                    statement evidence; the hotel-response agent reads the
+                    original reply and exact invoice references. They submit
+                    structured selections. Server code validates them and
+                    supplies the financial wording and permitted next steps.
+                  </p>
+                  <p>
+                    Each question or reply analysis has a limit of four model
+                    requests and a sixty-second deadline. Tool requests are
+                    bounded too. These limits help stop a single task running
+                    indefinitely.
+                  </p>
+                </details>
+                <details class="workflow-card">
+                  <summary>How records survive a refresh</summary>
+                  <p>
+                    The app saves statement sources, questions, hotel replies
+                    and human follow-up in private Google Cloud Storage.
+                    Original statement reports and recorded reviews are kept
+                    separate from later follow-up. Storage version checks stop
+                    an older screen from overwriting newer work.
+                  </p>
+                  <p>
+                    Repeated submissions reuse their saved request reference. An
+                    interrupted model request stays marked unconfirmed;
+                    refreshing does not automatically run it again.
+                  </p>
+                </details>
+                <details class="workflow-card">
+                  <summary>What happens when something fails</summary>
+                  <p>
+                    Provider errors, unfinished answers and unavailable checks
+                    remain visible. An answer that fails validation produces no
+                    actionable proposal. Your saved sources remain available. A
+                    case stays unchanged until an explicit follow-up save
+                    succeeds.
+                  </p>
+                  <p>
+                    Activity shows recorded tool actions rather than hidden
+                    reasoning. Quality separates checks on this statement from
+                    the original sample evaluation results, including their
+                    failures.
+                  </p>
+                </details>
+                <details class="workflow-card">
+                  <summary>Access, data and model use</summary>
+                  <p>
+                    This workspace uses a shared password and expiring
+                    server-side sessions. The shared password does not identify
+                    individual people; recorded names are self-reported. Secrets
+                    stay on the server. Saved correspondence is visible to
+                    everyone who has workspace access.
+                  </p>
+                  <p>
+                    Analysis sends the entered reply and selected invoice
+                    evidence to the configured Gemini service. Use fictional or
+                    anonymised records here. Asking or analysing uses the shared
+                    daily request allowance. It is a request limit, not a
+                    guaranteed spending cutoff.
+                  </p>
+                </details>
+                <details class="workflow-card">
+                  <summary>What is simulated here</summary>
+                  <p>
+                    Hotel, booking and finance records are fictional. The
+                    finance-service integration and recovery examples
+                    demonstrate the workflow without connecting to a real hotel
+                    or accounting system. A real rollout would need company
+                    sign-in, individual audit identities, retention rules and
+                    approved supplier/finance connections.
+                  </p>
+                  <p>
+                    This app uses Google ADK, Gemini, Cloud Run and Cloud
+                    Storage. It does not claim to be an official loveholidays
+                    system or to have measured business savings.
+                  </p>
+                </details>
+              </div>
+            </section>
+          </div>
+        </div>
+        <aside
+          id="help-panel"
+          class="help-panel"
+          aria-labelledby="help-title"
+          tabindex="-1"
+          hidden
+        >
+          <div class="help-heading">
+            <div>
+              <span class="eyebrow">A little guidance</span>
+              <h2 id="help-title">Workspace help</h2>
+            </div>
+            <button
+              id="help-close"
+              class="help-close"
+              type="button"
+              aria-label="Close help"
+            >
+              ×
+            </button>
+          </div>
+          <p>
+            Upload a statement, inspect the differences, then ask the assistant
+            or prepare a supplier query.
+          </p>
+          <button id="start-tour" class="btn primary" type="button">
+            Restart guided tour
+          </button>
+          <section
+            class="recovery-section"
+            aria-labelledby="recovery-title"
+            data-tour="recovery"
+          >
+            <h3 id="recovery-title">Try a recovery example</h3>
+            <p>
+              See how a finance-service outage or unexpected statement text is
+              handled. Your saved statements stay unchanged.
+            </p>
+            <div class="recovery-actions">
+              <button id="example-outage" class="btn" type="button">
+                Try a service outage</button
+              ><button id="example-hostile" class="btn" type="button">
+                Try misleading text
+              </button>
+            </div>
+            <p class="recovery-boundary">
+              Isolated examples using fictional records. No model calls or real
+              service changes.
+            </p>
+            <p id="recovery-feedback" class="helper" role="status">
+              Choose an example to begin.
+            </p>
+            <section
+              id="recovery-result"
+              class="recovery-result"
+              aria-labelledby="recovery-result-title"
+              hidden
+            >
+              <h4 id="recovery-result-title"></h4>
+              <p id="recovery-message"></p>
+              <p
+                id="recovery-source-note"
+                class="recovery-source-note"
+                hidden
+              ></p>
+              <ol id="recovery-events"></ol>
+              <p id="recovery-preserved" class="recovery-preserved"></p>
+              <p id="recovery-limits" class="helper"></p>
+              <button
+                id="example-retry"
+                class="btn primary"
+                type="button"
+                hidden
+              >
+                Retry example
+              </button>
+            </section>
+          </section>
+        </aside>
+        <footer class="app-footer">
+          <span>Supplier operations</span
+          ><span>Balances remain in their original currencies.</span>
+        </footer>
+      </div>
+      <div id="workspace-tour" class="workspace-tour" hidden>
+        <div id="tour-shade-top" class="tour-shade"></div>
+        <div id="tour-shade-bottom" class="tour-shade"></div>
+        <div id="tour-shade-left" class="tour-shade"></div>
+        <div id="tour-shade-right" class="tour-shade"></div>
+        <div id="tour-spotlight" class="tour-spotlight" hidden></div>
+        <section
+          id="tour-card"
+          class="tour-card"
+          role="dialog"
+          aria-modal="false"
+          aria-labelledby="tour-title"
+          aria-describedby="tour-body"
+          tabindex="-1"
+        >
+          <button
+            id="tour-close"
+            class="tour-close"
+            type="button"
+            aria-label="Close walkthrough"
+          >
+            ×</button
+          ><span id="tour-step" class="tour-step"
+            >YOUR WORKSPACE, AT A GLANCE</span
+          >
+          <h2 id="tour-title">From statement to clarity.</h2>
+          <p id="tour-body">Follow a sample statement through the workspace.</p>
+          <div
+            id="tour-progress"
+            class="tour-progress"
+            aria-hidden="true"
+            hidden
+          >
+            <span id="tour-progress-fill"></span>
+          </div>
+          <div id="tour-discoveries" class="tour-discoveries" hidden>
+            <span>Explore when you’re ready</span
+            ><button id="tour-discover-activity" type="button">Activity</button
+            ><button id="tour-discover-quality" type="button">
+              Quality checks</button
+            ><button id="tour-discover-decisions" type="button">
+              AI model comparison</button
+            ><button id="tour-discover-help" type="button">
+              Recovery examples
+            </button>
+          </div>
+          <div class="tour-actions">
+            <button id="tour-back" class="tour-back" type="button" hidden>
+              Back</button
+            ><button id="tour-skip" class="tour-secondary" type="button">
+              Explore myself</button
+            ><button id="tour-next" class="tour-primary" type="button">
+              Start guided task
+            </button>
+          </div>
+        </section>
+      </div>
+      <noscript><p>JavaScript is needed to open this workspace.</p></noscript>
+    </main>
+    <!-- Script whitespace must match the content security policy. -->
+    <!-- prettier-ignore -->
+    <script>$script</script>
+  </body>
+</html>
